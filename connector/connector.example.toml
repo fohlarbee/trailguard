@@ -1,0 +1,28 @@
+# TrailGuard connector configuration. Copy to connector.toml and edit.
+# Secrets are read from the environment, never from this file.
+
+mode = "shadow"            # "shadow": send events, log what would be held, act on nothing.
+                           # "live": deliver hold requests to your fraud desk.
+
+[bank]
+id = "BNK01"               # the institution ID TrailGuard issued you
+
+[trailguard]
+url = "https://api.trailguard.example"
+api_key_env = "TRAILGUARD_API_KEY"     # environment variable holding your API key
+salt_env = "TRAILGUARD_SALT"           # environment variable holding the network salt
+
+[source]
+type = "file"              # "file": the connector reads a file you append events to
+path = "/data/events.jsonl"            # "http": you POST events to the connector's /events
+batch = 500
+
+[holds]
+deliver = "file"           # "file": hold requests are appended to this file
+path = "/data/hold-requests.jsonl"     # "webhook": they are POSTed to webhook_url
+# webhook_url = "http://fraud-desk.internal/trailguard/holds"
+poll_seconds = 10
+
+[local]
+listen = "0.0.0.0:8088"    # reachable from your own systems only
+state = "/data/connector-state.db"

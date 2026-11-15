@@ -1,0 +1,22 @@
+# Default simulator run. Every value can be overridden with --config or CLI flags.
+
+[run]
+seed = 7
+start = "2026-10-05T00:00:00+01:00"   # a Monday, West Africa Time
+days = 7
+
+[world]
+banks = 4
+fintechs = 2
+customers = 5000
+payday = 3            # day index (0-based) on which employers pay salaries
+
+[fraud]
+cases = 40
+
+[fraud.scenario_weights]
+fan_out = 0.30
+layering = 0.25
+fast_cashout = 0.20
+commingled = 0.15
+insider = 0.10

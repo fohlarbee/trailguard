@@ -1,0 +1,10 @@
+.git
+.venv
+.env
+data
+models
+dashboard
+pitch-deck
+tests
+**/__pycache__
+.pytest_cache

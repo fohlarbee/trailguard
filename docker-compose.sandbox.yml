@@ -1,0 +1,53 @@
+# A self-contained TrailGuard to try before connecting anything real.
+#
+#   docker compose -f docker-compose.sandbox.yml up --build
+#
+# It starts the service, fills it with three days of synthetic activity from six
+# made-up institutions (ending now), and runs one bank connector in shadow mode
+# against a sample feed. Every key and salt below is for the sandbox only.
+name: trailguard-sandbox
+
+x-sandbox-env: &env
+  DATABASE_URL: postgresql://trailguard:trailguard@db:5432/trailguard
+  TRAILGUARD_SALT: sandbox-salt
+  TRAILGUARD_API_KEYS: BNK01:sandbox-bnk01,BNK02:sandbox-bnk02,BNK03:sandbox-bnk03,BNK04:sandbox-bnk04,FIN01:sandbox-fin01,FIN02:sandbox-fin02
+  TRAILGUARD_MODEL: /data/models/mule_scorer.joblib
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+
+services:
+  db:
+    image: postgres:17
+    environment: { POSTGRES_USER: trailguard, POSTGRES_PASSWORD: trailguard, POSTGRES_DB: trailguard }
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trailguard"]
+      interval: 2s
+      retries: 30
+
+  api:
+    build: .
+    environment: *env
+    ports: ["8010:8000"]
+    volumes: ["sandbox-data:/data"]
+    depends_on: { db: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/docs')"]
+      interval: 3s
+      retries: 30
+
+  seed:
+    build: .
+    environment: *env
+    command: ["python", "-m", "core", "seed-sandbox", "--url", "http://api:8000", "--data", "/data"]
+    volumes: ["sandbox-data:/data"]
+    depends_on: { api: { condition: service_healthy } }
+
+  connector:
+    build: { context: ., dockerfile: Dockerfile.connector }
+    environment: { TRAILGUARD_API_KEY: sandbox-bnk01, TRAILGUARD_SALT: sandbox-salt }
+    command: ["/data/connector.toml"]
+    ports: ["8088:8088"]
+    volumes: ["sandbox-data:/data"]
+    depends_on: { seed: { condition: service_completed_successfully } }
+
+volumes:
+  sandbox-data:
