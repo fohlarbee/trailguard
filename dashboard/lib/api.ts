@@ -84,7 +84,18 @@ export type CaseDetail = CaseRow & {
   evidence: { pack_id: number; built_at: string; hash: string } | null;
   str_draft: { draft_id: number; drafted_at: string; status: string; body: { narrative: string } } | null;
 };
-export type Me = { bank: string; now: string; simulated_clock: boolean };
+export type Me = { bank: string; now: string; simulated_clock: boolean; rate: number; demo: DemoPhase };
+export type DemoPhase = "idle" | "preparing" | "playing" | "investigating" | "finished" | "failed";
+export type DemoItem = {
+  id: string; at: string | null; actor: string; title: string; detail: string | null; steps: string[] | null;
+  tone: "scorer" | "hold" | "bank" | "stop" | "report" | "agent" | "quiet";
+};
+export type Demo = {
+  phase: DemoPhase; error: string | null; now: string; rate: number; case_id: string | null;
+  agent_outcome: string | null; feed: DemoItem[];
+  scenario: { stolen_kobo?: number; victim_bank?: string; method?: string; channel?: string;
+              theft_at?: string; banks?: string[] };
+};
 
 /** The service clock and the calling desk. Fetched once per render. */
 export const me = cache(() => api<Me>("/v1/me"));

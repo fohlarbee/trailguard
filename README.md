@@ -30,6 +30,22 @@ cd dashboard && npm install && npm run dev                  # http://localhost:3
 
 The investigator needs `ANTHROPIC_API_KEY` in `.env`.
 
+## Live demo
+
+With the API and dashboard running and the scorer trained (the first five commands above), open
+http://localhost:3100/demo and press **Start the demo**. It empties the database and plays one theft in
+about two minutes:
+
+1. A customer is scammed out of ₦776,660, and the money goes through a recruited customer's account
+   into mule accounts at three institutions.
+2. The scorer flags the mules, and the banks freeze the money and refuse to let it leave.
+3. The victim reports the theft, and the AI investigator works the case at real speed.
+4. The holds wait for the fraud desks to confirm them.
+
+The clock runs at 10× while money moves, 40× through quiet stretches, and real time while the investigator
+works. The theft is simulator seed 8 (`SEED` in `core/demo.py`). Without an Anthropic key the demo still
+runs, and the investigator step reports that it could not start.
+
 ## Test
 
 ```

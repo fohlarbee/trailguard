@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { reviewHold } from "@/app/actions";
+import { reviewHold, startDemo } from "@/app/actions";
 
 /** Re-reads the page's data on a timer, so new cases and bank answers appear unprompted. */
 export function AutoRefresh({ seconds }: { seconds: number }) {
@@ -86,6 +86,24 @@ export function Decide({ holdId, label, amount, from, canDecide }: {
           </Submit>
           <button type="button" disabled={!canDecide} onClick={() => setConfirming(true)}>Release</button>
         </>
+      )}
+    </form>
+  );
+}
+
+/** Start or restart the demo. It wipes the data on screen, so it asks first. */
+export function StartDemo({ label }: { label: string }) {
+  const [confirming, setConfirming] = useState(false);
+  return (
+    <form action={startDemo} className="decide" data-confirming={confirming ? "true" : undefined}>
+      {confirming ? (
+        <>
+          <p className="ask wide">This clears every case and hold on screen and plays the theft from the start.</p>
+          <Submit busy="Starting" className="primary">Start the demo</Submit>
+          <button type="button" className="quiet" onClick={() => setConfirming(false)}>Cancel</button>
+        </>
+      ) : (
+        <button type="button" className="primary" onClick={() => setConfirming(true)}>{label}</button>
       )}
     </form>
   );

@@ -22,15 +22,43 @@ export function Split({ stolen, held, inAccounts, gone, large }: {
   );
 }
 
-/** The split's three parts with their amounts, doubling as its legend. */
-export function SplitFigures({ held, inAccounts, gone }: { held: number; inAccounts: number; gone: number }) {
+/**
+ * Where the stolen money is, set out like a statement: one line per place it can
+ * be, each with its share drawn to scale, and the total stolen ruled off below.
+ */
+export function Ledger({ stolen, held, inAccounts, gone }: {
+  stolen: number; held: number; inAccounts: number; gone: number;
+}) {
+  const lines = [
+    { label: "Held by the banks", amount: held, tone: "held" },
+    { label: "In accounts, not held", amount: Math.max(inAccounts - held, 0), tone: "loose" },
+    { label: "Gone: cashed out or spent", amount: gone, tone: "gone" },
+  ];
   return (
-    <dl className="figures">
-      <div><dt><i className="held" />Held</dt><dd>{naira(held)}</dd></div>
-      <div><dt><i className="loose" />In accounts, not held</dt><dd>{naira(Math.max(inAccounts - held, 0))}</dd></div>
-      <div><dt><i className="gone" />Gone</dt><dd>{naira(gone)}</dd></div>
-    </dl>
+    <table className="ledger">
+      <tbody>
+        {lines.map((line) => (
+          <tr key={line.tone} className={`to-${line.tone}${line.amount > 0 ? "" : " zero"}`}>
+            <th scope="row">{line.label}</th>
+            <td className="track" aria-hidden="true">
+              <i style={{ width: `${stolen ? (line.amount / stolen) * 100 : 0}%` }} />
+            </td>
+            <td className="num">{naira(line.amount)}</td>
+          </tr>
+        ))}
+      </tbody>
+      <tfoot>
+        <tr><th scope="row">Reported stolen</th><td /><td className="num">{naira(stolen)}</td></tr>
+      </tfoot>
+    </table>
   );
+}
+
+/** Flag reasons as one sentence, the way an analyst would say them. */
+export function Reasons({ reasons }: { reasons: string[] }) {
+  if (reasons.length === 0) return null;
+  const text = reasons.join(", ");
+  return <p className="reasons">{text.charAt(0).toUpperCase() + text.slice(1)}.</p>;
 }
 
 export function CaseStatus({ row }: { row: CaseRow }) {
@@ -39,7 +67,7 @@ export function CaseStatus({ row }: { row: CaseRow }) {
 }
 
 export function HoldStatus({ hold }: { hold: Hold }) {
-  return <span className={`pill ${hold.status}`}>{HOLD_STATUS[hold.status] ?? hold.status}</span>;
+  return <span className={`status ${hold.status}`}>{HOLD_STATUS[hold.status] ?? hold.status}</span>;
 }
 
 /** When a hold lapses, or that it no longer will. */
@@ -73,15 +101,19 @@ export function Sizing({ held, traced, scope }: { held: number; traced: number; 
 /** The investigator's suggestion to hold less, and the button to accept it. */
 export function Advice({ hold, from, canDecide }: { hold: Hold; from: string; canDecide: boolean }) {
   if (hold.recommended_kobo == null || hold.status !== "active") return null;
+  const freed = (hold.held_kobo ?? 0) - hold.recommended_kobo;
   return (
     <form action={reduceHold} className="advice">
       <input type="hidden" name="hold_id" value={hold.hold_id} />
       <input type="hidden" name="label" value={short(hold.account)} />
       <input type="hidden" name="from" value={from} />
       <p>
-        The investigator recommends holding {naira(hold.recommended_kobo)} instead of {naira(hold.held_kobo)}.{" "}
-        {hold.recommendation}
+        <strong>The investigator suggests holding {naira(hold.recommended_kobo)}.</strong>{" "}
+        That releases {naira(freed)} no trace links to a theft.
       </p>
+      {hold.recommendation && (
+        <details><summary>Its reasoning</summary><p>{hold.recommendation}</p></details>
+      )}
       {hold.mine && (
         <Submit busy="Reducing" disabled={!canDecide}>Reduce to {naira(hold.recommended_kobo)}</Submit>
       )}
@@ -95,7 +127,7 @@ export function DecisionQueue({ holds, now, from, canDecide, caseFor, traced }: 
   traced: Map<string, number>;
 }) {
   return (
-    <ol className="queue">
+    <ol className="queue" aria-label="Holds waiting for a decision">
       {holds.map((hold) => {
         const left = minutesUntil(hold.expires_at, now);
         const amount = hold.held_kobo ?? hold.requested_kobo;
@@ -105,16 +137,16 @@ export function DecisionQueue({ holds, now, from, canDecide, caseFor, traced }: 
             <div className="what">
               <p className="amount">{naira(amount)}</p>
               <p>
-                {hold.status === "active" ? "held" : "asked for"} on <code>{short(hold.account)}</code>
+                {hold.status === "active" ? "Held" : "Asked for"} in <code>{short(hold.account)}</code>
                 <small>
                   Placed by {HOLD_SOURCE[hold.source] ?? hold.source} {when(hold.placed_at)}
                   {hold.status === "requested" && ". The bank has not confirmed the amount yet"}
                 </small>
               </p>
-              <Sizing held={amount} traced={traced.get(hold.account) ?? 0} scope="all" />
             </div>
             <div className="why">
-              <ul>{reasonsOf(hold).slice(0, 4).map((r) => <li key={r}>{r}</li>)}</ul>
+              <Reasons reasons={reasonsOf(hold).slice(0, 4)} />
+              <Sizing held={amount} traced={traced.get(hold.account) ?? 0} scope="all" />
               {cases.length > 0 && (
                 <p className="cases">
                   On the trail of{" "}

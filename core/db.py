@@ -10,7 +10,7 @@ from psycopg.rows import dict_row
 
 SCHEMA = Path(__file__).parent / "schema.sql"
 DEV_DATABASE_URL = "postgresql://trailguard:trailguard@localhost:5433/trailguard"
-TABLES = ["agent_runs", "str_drafts", "evidence_packs", "holds", "alerts", "trail_holdings", "trail_hops", "case_transactions", "cases", "transactions", "accounts", "audit_log"]
+TABLES = ["demo_clock", "agent_runs", "str_drafts", "evidence_packs", "holds", "alerts", "trail_holdings", "trail_hops", "case_transactions", "cases", "transactions", "accounts", "audit_log"]
 
 
 def database_url() -> str:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import datetime, timezone
 
 import anthropic
@@ -69,13 +70,18 @@ def investigate(
     case_id: str,
     now: datetime | None = None,
     client: anthropic.Anthropic | None = None,
+    clock: Callable[[], datetime] | None = None,
 ) -> dict:
-    """Run the investigator on a case. `now` is the moment the agent is working at."""
+    """Run the investigator on a case. `now` is the moment the agent starts working.
+
+    With `clock`, every tool call reads the time from it, so the case can move on
+    while the agent works (as it does in the live demo).
+    """
     now = now or datetime.now(timezone.utc)
     if not conn.execute("SELECT 1 FROM cases WHERE case_id = %s", (case_id,)).fetchone():
         raise LookupError(f"no case {case_id}")
     client = client or anthropic.Anthropic()
-    toolbox = Toolbox(conn, case_id, now)
+    toolbox = Toolbox(conn, case_id, now, clock)
 
     run_id = conn.execute(
         "INSERT INTO agent_runs (case_id, as_of, model) VALUES (%s, %s, %s) RETURNING run_id",

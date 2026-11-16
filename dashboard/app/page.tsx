@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CaseStatus, DecisionQueue, Split, SplitFigures, Tabs } from "@/components/parts";
+import { CaseStatus, DecisionQueue, Ledger, Split, Tabs } from "@/components/parts";
 import { Shell, messageFrom } from "@/components/Shell";
 import { api, me, reviewerName, type CaseRow, type Hold } from "@/lib/api";
 import {
@@ -52,13 +52,12 @@ async function Desk({ view }: { view: View }) {
       </section>
 
       <section aria-labelledby="network-title">
-        <h2 id="network-title">Across the network</h2>
+        <h2 id="network-title">Stolen money across the network</h2>
         <p className="hint">
-          {naira(total("stolen_kobo"))} reported stolen in {cases.length} {cases.length === 1 ? "case" : "cases"}.
+          Every reported case, at every bank, as of now. {cases.length} {cases.length === 1 ? "case" : "cases"} so far.
         </p>
-        <Split large stolen={total("stolen_kobo")} held={total("held_kobo")}
-               inAccounts={total("in_accounts_kobo")} gone={total("exited_kobo")} />
-        <SplitFigures held={total("held_kobo")} inAccounts={total("in_accounts_kobo")} gone={total("exited_kobo")} />
+        <Ledger stolen={total("stolen_kobo")} held={total("held_kobo")}
+                inAccounts={total("in_accounts_kobo")} gone={total("exited_kobo")} />
       </section>
 
       <section aria-labelledby="cases-title">

@@ -17,7 +17,7 @@ import anthropic
 
 from agent.investigator import investigate
 
-from . import audit, clock, db, holds, scoring, tracer, views
+from . import audit, clock, db, demo, holds, scoring, tracer, views
 from .ingest import IngestError, store_events
 
 @asynccontextmanager
@@ -26,7 +26,9 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # repeat, so this also upgrades a database created by an earlier version.
     with db.connect() as conn:
         db.init_schema(conn)
+        demo.restore_clock(conn)
     yield
+    demo.stop()
 
 
 app = FastAPI(title="TrailGuard", version="0.1.0", lifespan=lifespan)
@@ -60,7 +62,8 @@ def post_events(batch: EventBatch, bank: str = Depends(institution),
 
 @app.get("/v1/me")
 def me(bank: str = Depends(institution)) -> dict:
-    return {"bank": bank, "now": clock.now(), "simulated_clock": clock.simulated()}
+    return {"bank": bank, "now": clock.now(), "simulated_clock": clock.simulated(), "rate": clock.rate(),
+            "demo": demo.state().phase}
 
 
 @app.get("/v1/cases")
@@ -209,3 +212,22 @@ def latest_evidence(case_id: str, bank: str = Depends(institution),
 @app.get("/v1/audit/verify")
 def verify_audit(bank: str = Depends(institution), conn: psycopg.Connection = Depends(connection)) -> dict:
     return audit.verify(conn)
+
+
+@app.get("/v1/demo")
+def demo_status(bank: str = Depends(institution), conn: psycopg.Connection = Depends(connection)) -> dict:
+    """Where the live demo is, and what TrailGuard has seen and done since it began."""
+    return demo.status(conn)
+
+
+@app.post("/v1/demo/start")
+def demo_start(bank: str = Depends(institution)) -> dict:
+    """Empty the database and play the demo theft from the beginning."""
+    demo.start()
+    return {"phase": demo.state().phase}
+
+
+@app.post("/v1/demo/stop")
+def demo_stop(bank: str = Depends(institution)) -> dict:
+    demo.stop()
+    return {"phase": demo.state().phase}

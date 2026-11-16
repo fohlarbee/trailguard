@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { runInvestigator } from "@/app/actions";
 import { Decide, Submit } from "@/components/client";
-import { Advice, HoldStatus, Lapse, Sizing, Split, SplitFigures } from "@/components/parts";
+import { Advice, HoldStatus, Lapse, Ledger, Reasons, Sizing } from "@/components/parts";
 import { Shell, messageFrom } from "@/components/Shell";
 import { TrailGraph } from "@/components/TrailGraph";
 import { api, ApiError, reviewerName, type CaseDetail, type Hold } from "@/lib/api";
@@ -50,8 +50,7 @@ async function Case({ id }: { id: string }) {
             ? <><strong>{duration(left)}</strong> left of the 30-minute response window</>
             : "The 30-minute response window has passed"}
         </p>
-        <Split large stolen={d.stolen_kobo} held={d.held_kobo} inAccounts={d.in_accounts_kobo} gone={d.exited_kobo} />
-        <SplitFigures held={d.held_kobo} inAccounts={d.in_accounts_kobo} gone={d.exited_kobo} />
+        <Ledger stolen={d.stolen_kobo} held={d.held_kobo} inAccounts={d.in_accounts_kobo} gone={d.exited_kobo} />
         {mineWaiting.length > 0 && (
           <p className="callout">
             {mineWaiting.length} {mineWaiting.length === 1 ? "hold on this trail is" : "holds on this trail are"} on{" "}
@@ -103,7 +102,7 @@ async function Case({ id }: { id: string }) {
                       <td>
                         {a.alert ? (
                           <>Flagged {when(a.alert.first_flagged_at)}
-                            <ul className="reasons">{a.alert.reasons.map((r) => <li key={r}>{r}</li>)}</ul></>
+                            <Reasons reasons={a.alert.reasons} /></>
                         ) : <span className="muted">Not flagged</span>}
                       </td>
                       <td>

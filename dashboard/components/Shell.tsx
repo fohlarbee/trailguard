@@ -6,8 +6,8 @@ import { AutoRefresh, DeskSelect, Flash, Submit } from "./client";
 
 type Message = { done?: string; error?: string };
 
-export async function Shell({ children, active, message }: {
-  children: React.ReactNode; active: "desk" | "holds"; message?: Message;
+export async function Shell({ children, active, message, refresh = 15 }: {
+  children: React.ReactNode; active: "desk" | "holds" | "demo"; message?: Message; refresh?: number;
 }) {
   const desk = await currentDesk();
   const reviewer = await reviewerName();
@@ -20,12 +20,13 @@ export async function Shell({ children, active, message }: {
   }
   return (
     <>
-      <AutoRefresh seconds={15} />
+      <AutoRefresh seconds={refresh} />
       <header className="top">
         <Link href="/" className="brand">TrailGuard</Link>
         <nav aria-label="Main">
           <Link href="/" aria-current={active === "desk" ? "page" : undefined}>Desk</Link>
           <Link href="/holds" aria-current={active === "holds" ? "page" : undefined}>Holds</Link>
+          <Link href="/demo" aria-current={active === "demo" ? "page" : undefined}>Live demo</Link>
         </nav>
         <form action={chooseDesk} className="desk">
           <label>Fraud desk <DeskSelect desks={Object.keys(desks())} current={desk} /></label>
@@ -41,7 +42,9 @@ export async function Shell({ children, active, message }: {
         {clock && (
           <p className="clock">
             <time dateTime={clock.now}>{when(clock.now)}</time> WAT
-            {clock.simulated_clock && <span title="Replayed data: the clock is simulated">Replay</span>}
+            {clock.demo !== "idle"
+              ? <span title="Demo data: the clock is simulated">{clock.rate > 1 ? `Demo · ${clock.rate}×` : "Demo"}</span>
+              : clock.simulated_clock && <span title="Replayed data: the clock is simulated">Replay</span>}
           </p>
         )}
       </header>

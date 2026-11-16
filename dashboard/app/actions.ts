@@ -64,6 +64,24 @@ export async function reduceHold(formData: FormData) {
   back(formData, { done: `Hold on ${formData.get("label")} reduced to ${naira(held)}.` });
 }
 
+/** Empty the database and play the demo theft from the start. */
+export async function startDemo() {
+  try {
+    await api("/v1/demo/start", { method: "POST" });
+  } catch (error) {
+    redirect(`/demo?error=${encodeURIComponent(failure(error, "The demo could not start.").error)}`);
+  }
+  revalidatePath("/", "layout");
+  redirect("/demo");
+}
+
+/** Switch to a bank's fraud desk and open it, so the presenter can decide its holds. */
+export async function openDesk(formData: FormData) {
+  (await cookies()).set("desk", String(formData.get("desk")), { maxAge: YEAR });
+  revalidatePath("/", "layout");
+  redirect(String(formData.get("to") || "/"));
+}
+
 const OUTCOME: Record<string, string> = {
   completed: "The investigator finished. Its handover is below.",
   refused: "The model declined to work this case. See the note below.",

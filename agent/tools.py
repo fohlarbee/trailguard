@@ -11,6 +11,7 @@ Tool results contain only hashed identifiers. Money is reported in naira.
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import datetime
 
 import psycopg
@@ -86,8 +87,14 @@ def naira(kobo: int | None) -> float | None:
 
 
 class Toolbox:
-    def __init__(self, conn: psycopg.Connection, case_id: str, now: datetime):
-        self.conn, self.case_id, self.now = conn, case_id, now
+    def __init__(self, conn: psycopg.Connection, case_id: str, now: datetime,
+                 clock: Callable[[], datetime] | None = None):
+        """`now` is when the agent works. With `clock`, each tool call reads the time from it instead."""
+        self.conn, self.case_id, self._now, self._clock = conn, case_id, now, clock
+
+    @property
+    def now(self) -> datetime:
+        return self._clock() if self._clock else self._now
 
     def call(self, name: str, arguments: dict) -> tuple[str, bool]:
         """Run a tool. Returns (result as JSON text, whether it failed)."""

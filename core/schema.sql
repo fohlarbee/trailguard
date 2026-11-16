@@ -163,3 +163,11 @@ CREATE TABLE IF NOT EXISTS audit_log (
     prev_hash  TEXT NOT NULL,
     hash       TEXT NOT NULL
 );
+
+-- The live demo's clock, so a restarted service carries on at the demo's time.
+CREATE TABLE IF NOT EXISTS demo_clock (
+    id      INT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    anchor  TIMESTAMPTZ NOT NULL,             -- simulated time when the pace was set
+    since   TIMESTAMPTZ NOT NULL,             -- real time when the pace was set
+    rate    REAL NOT NULL
+);

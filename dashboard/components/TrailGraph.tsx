@@ -57,7 +57,7 @@ export function TrailGraph({ detail }: { detail: CaseDetail }) {
   return (
     <div className="trail scroll">
       <svg viewBox={`0 0 ${width} ${height}`} role="img"
-           style={{ width: "100%", minWidth: Math.min(width, 760), maxWidth: width, height: "auto" }}
+           style={{ width: "100%", minWidth: Math.min(width, 440), maxWidth: width, height: "auto" }}
            aria-label="Path of the stolen money from the victim through mule accounts to where it left the banking system">
         {[...edges.values()].map((edge) => {
           const a = nodes.get(edge.from), b = nodes.get(edge.to);
