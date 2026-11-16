@@ -98,6 +98,10 @@
 
   .phase { color: var(--green); font-weight: 700; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
   .card ul { margin: 10px 0 0 26px; font-size: 18.5px; line-height: 1.42; color: var(--ink-soft); }
+  .shot { flex: 1; }
+  .shot img { display: block; width: 100%; border-radius: 8px; border: 1px solid var(--line-light); box-shadow: 0 6px 22px rgba(14,26,46,0.14); }
+  .shot figcaption { font-size: 16.5px; line-height: 1.4; color: var(--ink-soft); margin-top: 12px; }
+  .res { color: var(--teal); font-size: 48px; }
   .tech h3 { color: var(--teal); font-size: 22px; }
 </style>
 </head>
@@ -135,7 +139,7 @@
     <div class="card"><div class="big">34%</div><p style="max-width:270px; color:var(--ink);">drop in fraud reporting in Q4 2025, which risks hiding the true scale</p></div>
   </div>
   <p class="body lead" style="top:494px;">Internet banking was the costliest channel: ₦13.37bn from only 4,507 cases. Insider abuse is the most serious social-engineering threat.</p>
-  <div class="footer"><span>Source: NIBSS, 2026 Nigeria Electronic Fraud Forum</span><span>2 / 12</span></div>
+  <div class="footer"><span>Source: NIBSS, 2026 Nigeria Electronic Fraud Forum</span><span>2 / 14</span></div>
 </section>
 
 <!-- 3 -->
@@ -150,7 +154,7 @@
     <div class="card"><div class="step">Step 3</div><h3>Trail goes cold</h3><p>Cross-bank hops delay recovery, and getting funds back needs court orders.</p></div>
   </div>
   <p class="body" style="top:448px; font-size:26.5px;">Each bank sees only its own hop. CBN wants fraud response in <span class="teal">under 30 minutes</span>.</p>
-  <div class="footer"><span>Sources: Nairametrics, Finance in Africa, AllAfrica (CBN at NeFF 2026)</span><span>3 / 12</span></div>
+  <div class="footer"><span>Sources: Nairametrics, Finance in Africa, AllAfrica (CBN at NeFF 2026)</span><span>3 / 14</span></div>
 </section>
 
 <!-- 4 -->
@@ -158,12 +162,12 @@
   <div class="eyebrow">The solution: TrailGuard</div>
   <h2>One privacy-safe trail for every stolen naira</h2>
   <div class="body grid2" style="top:218px;">
-    <div class="card iconcard"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><div><h3>Detect</h3><p>Graph AI scores accounts for mule behaviour as transactions happen.</p></div></div>
+    <div class="card iconcard"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><div><h3>Detect</h3><p>A machine-learning scorer flags mule accounts as transactions happen, often before the victim reports.</p></div></div>
     <div class="card iconcard"><svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><div><h3>Trace</h3><p>Reported funds are followed hop by hop across partner banks.</p></div></div>
     <div class="card iconcard"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><path d="M12 15v3"/></svg><div><h3>Freeze</h3><p>Hold alerts reach downstream banks, using the CBN 24-hour watchlist window.</p></div></div>
     <div class="card iconcard"><svg class="icon" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg><div><h3>Prove</h3><p>Hash-anchored alerts and holds give a court-ready evidence pack and a drafted suspicious transaction report.</p></div></div>
   </div>
-  <div class="footer"><span>TrailGuard</span><span>4 / 12</span></div>
+  <div class="footer"><span>TrailGuard</span><span>4 / 14</span></div>
 </section>
 
 <!-- 5 -->
@@ -175,17 +179,17 @@
     <div class="arrow" style="flex-basis:32px;"><svg viewBox="0 0 38 22" style="width:28px;"><path d="M0 7h22V0l16 11-16 11v-7H0z"/></svg></div>
     <div class="card" style="padding:18px 18px 22px;"><h3 style="font-size:20.5px;">Privacy gateway</h3><p style="font-size:16px;">Salted, hashed BVN, phone and device IDs; risk tier only</p></div>
     <div class="arrow" style="flex-basis:32px;"><svg viewBox="0 0 38 22" style="width:28px;"><path d="M0 7h22V0l16 11-16 11v-7H0z"/></svg></div>
-    <div class="card" style="padding:18px 18px 22px;"><h3 style="font-size:20.5px;">Graph AI engine</h3><p style="font-size:16px;">Mule scoring and ring detection on the shared graph</p></div>
+    <div class="card" style="padding:18px 18px 22px;"><h3 style="font-size:20.5px;">Mule scorer</h3><p style="font-size:16px;">Scores accounts and spots shared devices and BVNs</p></div>
     <div class="arrow" style="flex-basis:32px;"><svg viewBox="0 0 38 22" style="width:28px;"><path d="M0 7h22V0l16 11-16 11v-7H0z"/></svg></div>
     <div class="card" style="padding:18px 18px 22px;"><h3 style="font-size:20.5px;">Fund-trail tracer</h3><p style="font-size:16px;">Hop-by-hop path and hold alerts</p></div>
     <div class="arrow" style="flex-basis:32px;"><svg viewBox="0 0 38 22" style="width:28px;"><path d="M0 7h22V0l16 11-16 11v-7H0z"/></svg></div>
-    <div class="card" style="padding:18px 18px 22px;"><h3 style="font-size:20.5px;">Action layer</h3><p style="font-size:16px;">Fraud desk alerts, evidence ledger, GenAI reports</p></div>
+    <div class="card" style="padding:18px 18px 22px;"><h3 style="font-size:20.5px;">Action layer</h3><p style="font-size:16px;">Automatic holds, fraud desk, AI investigator, evidence ledger</p></div>
   </div>
   <div class="body" style="top:452px;">
-    <p class="lead">Federated learning lets every bank improve the model without exposing customers.</p>
+    <p class="lead">A small connector inside each bank hashes customer IDs before anything leaves the bank.</p>
     <p class="sub">Every hold stays under human review, with a full audit trail.</p>
   </div>
-  <div class="footer"><span>TrailGuard</span><span>5 / 12</span></div>
+  <div class="footer"><span>TrailGuard</span><span>5 / 14</span></div>
 </section>
 
 <!-- 6 -->
@@ -201,25 +205,50 @@
       <tr><td>Privacy</td><td>Raw data is hard to share</td><td>Hashed IDs and risk tiers only</td></tr>
     </table>
   </div>
-  <div class="footer"><span>TrailGuard</span><span>6 / 12</span></div>
+  <div class="footer"><span>TrailGuard</span><span>6 / 14</span></div>
 </section>
 
 <!-- 7 -->
 <section class="slide dark">
-  <div class="eyebrow">Live demo plan</div>
-  <h2>One theft, traced across three banks</h2>
+  <div class="eyebrow">How a case runs</div>
+  <h2>From fraud report to frozen funds in minutes</h2>
   <div class="body row" style="top:218px; gap:16px;">
-    <div class="card" style="padding:20px 20px 28px;"><div class="time">00:00</div><p style="color:var(--cream);">Victim reports a social-engineering theft</p></div>
-    <div class="card" style="padding:20px 20px 28px;"><div class="time">00:05</div><p style="color:var(--cream);">Tracer maps the funds into four mule accounts</p></div>
-    <div class="card" style="padding:20px 20px 28px;"><div class="time">00:12</div><p style="color:var(--cream);">Graph AI scores each account and highlights the ring</p></div>
-    <div class="card" style="padding:20px 20px 28px;"><div class="time">00:20</div><p style="color:var(--cream);">Hold alerts reach downstream banks before cash-out</p></div>
-    <div class="card" style="padding:20px 20px 28px;"><div class="time">00:30</div><p style="color:var(--cream);">Evidence pack and suspicious transaction report are ready</p></div>
+    <div class="card" style="padding:20px 20px 28px;"><div class="time">Report</div><p style="color:var(--cream);">The victim's bank sends the fraud report through its connector</p></div>
+    <div class="card" style="padding:20px 20px 28px;"><div class="time">Seconds</div><p style="color:var(--cream);">The tracer follows the money hop by hop across every bank</p></div>
+    <div class="card" style="padding:20px 20px 28px;"><div class="time">Seconds</div><p style="color:var(--cream);">Accounts still holding stolen money get a temporary 24-hour hold</p></div>
+    <div class="card" style="padding:20px 20px 28px;"><div class="time">~1 min</div><p style="color:var(--cream);">The AI investigator chases banks and drafts the evidence pack and report</p></div>
+    <div class="card" style="padding:20px 20px 28px;"><div class="time">24 h</div><p style="color:var(--cream);">Each bank's fraud desk confirms or releases the holds on its accounts</p></div>
   </div>
-  <p class="body lead" style="top:440px; color:var(--mist);">Illustrative timeline, run on synthetic data, against a visible 30-minute response clock.</p>
-  <div class="footer"><span>TrailGuard</span><span>7 / 12</span></div>
+  <p class="body lead" style="top:470px; color:var(--mist);">Mule accounts are often flagged and held before the victim even reports.<br>No hold becomes permanent without a person at the account's bank.</p>
+  <div class="footer"><span>TrailGuard</span><span>7 / 14</span></div>
 </section>
 
 <!-- 8 -->
+<section class="slide light">
+  <div class="eyebrow">Working prototype</div>
+  <h2>A fraud desk built around the decisions that matter</h2>
+  <div class="body row" style="top:222px; gap:24px; align-items:flex-start;">
+    <figure class="shot"><img src="screens/desk.png" alt="Fraud desk view"><figcaption>The desk opens on holds waiting for a decision, soonest to lapse first, with how much of each is traced as stolen.</figcaption></figure>
+    <figure class="shot"><img src="screens/case.png" alt="Case view"><figcaption>Each case shows where the money went, what is held, and what has already left the banking system.</figcaption></figure>
+  </div>
+  <div class="footer"><span>Screens from the prototype, running on synthetic data</span><span>8 / 14</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide dark">
+  <div class="eyebrow">Tested results</div>
+  <h2>Measured against labelled fraud the system never saw</h2>
+  <div class="body row" style="top:218px; gap:16px;">
+    <div class="card"><div class="big res">100%</div><p>of stolen transactions traced across banks, with no innocent transaction flagged</p></div>
+    <div class="card"><div class="big res">94%</div><p>of mule accounts flagged (67 of 71); only 2 of 5,543 genuine accounts wrongly flagged</p></div>
+    <div class="card"><div class="big res">37 of 40</div><p>cases had a mule flagged before it moved the money on</p></div>
+    <div class="card"><div class="big res">~1 min</div><p>for the AI investigator to work a full case</p></div>
+  </div>
+  <p class="body lead" style="top:500px; color:var(--mist);">Synthetic data: 6 institutions, 5,614 accounts and 40 fraud cases over 7 days, calibrated to NIBSS figures. A pilot on real data is the next proof.</p>
+  <div class="footer"><span>TrailGuard</span><span>9 / 14</span></div>
+</section>
+
+<!-- 10 -->
 <section class="slide light">
   <div class="eyebrow">Impact</div>
   <h2>Aligned with what CBN and NIBSS are asking for</h2>
@@ -230,10 +259,10 @@
     <div class="card" style="padding:20px 22px 22px;"><h3>Compliant by design</h3><p style="margin-top:6px;">Hosted in-country for data localisation, with human review and an audit trail on every hold.</p></div>
   </div>
   <p class="body lead" style="top:526px;">Outcome: more stolen funds held before cash-out, and fewer victims waiting on court orders.</p>
-  <div class="footer"><span>Sources: CBN directives (2026) via TechCabal, Nairametrics and NIBSS</span><span>8 / 12</span></div>
+  <div class="footer"><span>Sources: CBN directives (2026) via TechCabal, Nairametrics and NIBSS</span><span>10 / 14</span></div>
 </section>
 
-<!-- 9 -->
+<!-- 11 -->
 <section class="slide dark">
   <div class="eyebrow">Target users</div>
   <h2>One pilot bank first, then the whole industry</h2>
@@ -244,23 +273,23 @@
     <div class="card" style="padding:26px 22px 22px;"><svg class="icon" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><h3 style="font-size:22px; margin-top:10px;">Customers</h3><p>A WhatsApp and USSD assistant in English, Pidgin, Yoruba, Hausa and Igbo to report fraud fast.</p></div>
   </div>
   <p class="body lead" style="top:470px; color:var(--mist);">Start inside one pilot bank. Expand through NIBSS.</p>
-  <div class="footer"><span>TrailGuard</span><span>9 / 12</span></div>
+  <div class="footer"><span>TrailGuard</span><span>11 / 14</span></div>
 </section>
 
-<!-- 10 -->
+<!-- 12 -->
 <section class="slide light">
   <div class="eyebrow">Implementation approach</div>
   <h2>Three phases, from prototype to industry layer</h2>
   <div class="body row" style="top:218px;">
-    <div class="card"><div class="phase">Phase 1</div><h3>Prototype</h3><ul><li>Multi-bank simulator with injected mule rings</li><li>Mule scorer and fund-trail tracer</li><li>Live dashboard with a 30-minute clock</li></ul></div>
+    <div class="card"><div class="phase">Phase 1 · Built</div><h3>Prototype</h3><ul><li>Multi-bank simulator with labelled fraud</li><li>Tracer, mule scorer and automatic holds</li><li>AI investigator and fraud desk</li></ul></div>
     <div class="card"><div class="phase">Phase 2 · Months 1-3</div><h3>Pilot inside one bank</h3><ul><li>Shadow-mode scoring on live transactions</li><li>Tune against real fraud cases</li><li>Fit the fraud desk and watchlist workflow</li></ul></div>
     <div class="card"><div class="phase">Phase 3 · Months 3-9</div><h3>Industry rollout</h3><ul><li>Onboard partner banks via the hashed gateway</li><li>Federated training across institutions</li><li>Coordinate with NIBSS</li></ul></div>
   </div>
   <p class="body lead" style="top:528px;">Human review on every hold. Full audit trail. Independent audits of the shared registry.</p>
-  <div class="footer"><span>TrailGuard</span><span>10 / 12</span></div>
+  <div class="footer"><span>TrailGuard</span><span>12 / 14</span></div>
 </section>
 
-<!-- 11 -->
+<!-- 13 -->
 <section class="slide dark">
   <div class="eyebrow">Technology</div>
   <h2>AI, agents, APIs and cloud, each with a job</h2>
@@ -272,15 +301,15 @@
     <div class="card tech" style="padding:20px 22px 28px;"><h3>APIs</h3><p>Bank connector and real-time API (FastAPI) designed for NIBSS rails, BVN and NIN checks, and the CBN watchlist.</p></div>
     <div class="card tech" style="padding:20px 22px 28px;"><h3>Cloud and data</h3><p>In-country hosting, Postgres, containerised services and a live dashboard for fraud teams.</p></div>
   </div>
-  <div class="footer"><span>TrailGuard</span><span>11 / 12</span></div>
+  <div class="footer"><span>TrailGuard</span><span>13 / 14</span></div>
 </section>
 
-<!-- 12 -->
+<!-- 14 -->
 <section class="slide green">
   <div class="eyebrow">TrailGuard</div>
   <div style="position:absolute; left:85px; top:208px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:80px; line-height:1.08; letter-spacing:-0.01em;">Stop the trail. Recover<br>the money.</div>
   <div style="position:absolute; left:85px; top:404px; width:880px; font-size:26.5px; line-height:1.4;">One privacy-safe view of stolen funds across Nigerian banks, and the speed to act before cash-out.</div>
-  <div style="position:absolute; left:85px; top:578px; font-size:19px;">Demo built on synthetic data calibrated to public NIBSS statistics.</div>
+  <div style="position:absolute; left:85px; top:578px; font-size:19px;">Working prototype, tested on synthetic data calibrated to public NIBSS statistics.</div>
   <div style="position:absolute; left:85px; top:610px; font-size:19.5px; font-weight:700;">Olanrewaju Samuel Abimbola · sammyola246@gmail.com</div>
 </section>
 
