@@ -43,7 +43,18 @@ def case_list(conn: psycopg.Connection, now: datetime) -> list[dict]:
                   (SELECT outcome FROM agent_runs r WHERE r.case_id = c.case_id AND r.as_of <= %s
                    ORDER BY run_id DESC LIMIT 1) AS agent_outcome
            FROM cases c WHERE c.reported_at <= %s ORDER BY c.reported_at DESC""", (now, now)).fetchall()
-    return [{**case, **_figures(conn, case, now)[0]} for case in cases]
+    rows = []
+    for case in cases:
+        figures, trail, _ = _figures(conn, case, now)
+        rows.append({
+            **case, **figures,
+            "trail_accounts": _trail_accounts(trail),
+            # Stolen money from this case still in each account, for sizing holds.
+            "holdings": {h.account: h.tainted_kobo for h in trail.holdings},
+            "banks_involved": sorted({h.sender_bank for h in trail.hops}
+                                     | {h.receiver_bank for h in trail.hops if h.receiver_bank}),
+        })
+    return rows
 
 
 def case_detail(conn: psycopg.Connection, case_id: str, now: datetime, bank: str) -> dict:

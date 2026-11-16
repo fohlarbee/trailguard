@@ -5,7 +5,8 @@ Run locally with:  uv run --env-file .env uvicorn core.api:app --port 8000
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
+from contextlib import asynccontextmanager
 from datetime import datetime
 
 import psycopg
@@ -19,7 +20,16 @@ from agent.investigator import investigate
 from . import audit, clock, db, holds, scoring, tracer, views
 from .ingest import IngestError, store_events
 
-app = FastAPI(title="TrailGuard", version="0.1.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    # Bring the database up to the current schema. Every statement in it is safe to
+    # repeat, so this also upgrades a database created by an earlier version.
+    with db.connect() as conn:
+        db.init_schema(conn)
+    yield
+
+
+app = FastAPI(title="TrailGuard", version="0.1.0", lifespan=lifespan)
 
 
 def connection() -> Iterator[psycopg.Connection]:

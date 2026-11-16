@@ -1,5 +1,6 @@
 // Server-side access to the TrailGuard API. API keys never reach the browser.
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
@@ -24,6 +25,10 @@ export async function currentDesk(): Promise<string> {
   const all = Object.keys(desks());
   const chosen = (await cookies()).get("desk")?.value;
   return chosen && all.includes(chosen) ? chosen : all[0];
+}
+
+export async function reviewerName(): Promise<string> {
+  return (await cookies()).get("reviewer")?.value ?? "";
 }
 
 export class ApiError extends Error {}
@@ -53,6 +58,7 @@ export type CaseRow = {
   case_id: string; reporting_bank: string; reported_at: string; victim_account: string;
   agent_outcome: string | null; minutes_since_report: number; stolen_kobo: number;
   exited_kobo: number; in_accounts_kobo: number; held_kobo: number; holds_awaiting_review: number;
+  trail_accounts?: string[]; banks_involved?: string[]; holdings?: Record<string, number>;
 };
 export type Hop = {
   seq: number; hop: number; transaction_id: string; ts: string; sender_bank: string; sender_account: string;
@@ -79,3 +85,6 @@ export type CaseDetail = CaseRow & {
   str_draft: { draft_id: number; drafted_at: string; status: string; body: { narrative: string } } | null;
 };
 export type Me = { bank: string; now: string; simulated_clock: boolean };
+
+/** The service clock and the calling desk. Fetched once per render. */
+export const me = cache(() => api<Me>("/v1/me"));

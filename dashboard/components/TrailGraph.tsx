@@ -71,8 +71,8 @@ export function TrailGraph({ detail }: { detail: CaseDetail }) {
         })}
         {[...nodes.values()].map((n) => {
           const left = here.get(n.id) ?? 0;
-          return (
-            <g key={n.id} transform={`translate(${x(n)} ${y(n)})`}
+          const box = (
+            <g transform={`translate(${x(n)} ${y(n)})`}
                className={`node ${n.kind}${n.flagged ? " flagged" : ""}${n.held ? " held" : ""}`}>
               <rect width={W} height={H} rx={n.kind === "exit" ? 27 : 6} />
               <text x={12} y={22} className="t">{n.title}</text>
@@ -83,6 +83,9 @@ export function TrailGraph({ detail }: { detail: CaseDetail }) {
               </text>
             </g>
           );
+          return n.kind === "account"
+            ? <a key={n.id} href={`#acct-${n.id}`} aria-label={`${n.title}: show its flags and hold`}>{box}</a>
+            : <g key={n.id}>{box}</g>;
         })}
       </svg>
       <p className="legend on-dark">
